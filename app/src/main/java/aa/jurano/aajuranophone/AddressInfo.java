@@ -40,4 +40,14 @@ public class AddressInfo {
     public void setJob(String job) {
         this.job = job;
     }
+
+    @Override
+    public String toString() {
+        return "AddressInfo{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", phone='" + phone + '\'' +
+                ", job='" + job + '\'' +
+                '}';
+    }
 }

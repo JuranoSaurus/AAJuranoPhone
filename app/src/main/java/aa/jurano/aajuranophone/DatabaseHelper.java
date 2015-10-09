@@ -81,10 +81,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 //        String query = "";
+        StringBuilder queryBuilder = new StringBuilder();
         String query = context.getString(R.string.INSERT_QUERY);
-        query = String.format(query, "('" + addressInfo.getName() + "',", addressInfo.getAge(), ",'" + addressInfo.getPhone() + "','" + addressInfo.getJob() + "')");
-        Log.d("QUERY", query);
-        db.execSQL(query);
+        queryBuilder.append(query).append("('").append(addressInfo.getName()).append("',").append(addressInfo.getAge())
+                .append(",'").append(addressInfo.getPhone()).append("','").append(addressInfo.getJob()).append("')");
+//        query = String.format(query, "('" + addressInfo.getName() + "',",
+//                addressInfo.getAge(), ",'" + addressInfo.getPhone() + "','" + addressInfo.getJob() + "')");
+        Log.d("QUERY", queryBuilder.toString());
+        db.execSQL(queryBuilder.toString());
     }
 
     public List<AddressInfo> getAllAddress(){
@@ -95,17 +99,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = context.getString(R.string.SELECT_QUERY);
 
         Cursor cursor = db.rawQuery(query, null);
+        int cursorCount = cursor.getCount();
         List<AddressInfo> addressList = new ArrayList<AddressInfo>();
         AddressInfo addressInfo = null;
-
-        while (cursor.moveToNext()){
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
             addressInfo = new AddressInfo();
             addressInfo.setName(cursor.getString(0));
             addressInfo.setAge(cursor.getInt(1));
             addressInfo.setPhone(cursor.getString(2));
             addressInfo.setJob(cursor.getString(3));
             addressList.add(addressInfo);
+            cursor.moveToNext();
         }
+        cursor.close();
+
+        Log.d("insertAddressData", addressList.toString());
         return addressList;
     }
 

@@ -3,21 +3,23 @@ package aa.jurano.aajuranophone;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
 @EActivity(R.layout.activity_address_list)
 public class AddressListActivity extends Activity {
-    private ListView addressList;
+    @ViewById
+    ListView addressList;
 
     private  DatabaseHelper databaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_address_list);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -25,12 +27,13 @@ public class AddressListActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-
-        addressList = (ListView) findViewById(R.id.addressList);
-
-        List<AddressInfo> addressInfoList = databaseHelper.getAllAddress();
-        addressList.setAdapter(new AddressAdapter(addressInfoList, this));
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        List<AddressInfo> addressInfoList = databaseHelper.getAllAddress();
+        Log.d("AddressListActivity", addressInfoList.toString());
+        addressList.setAdapter(new AddressAdapter(addressInfoList, this));
+    }
 }

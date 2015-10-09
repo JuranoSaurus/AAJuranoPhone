@@ -14,16 +14,16 @@ import org.androidannotations.annotations.ViewById;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
 
-    @ViewById(R.id.etName)
+    @ViewById
     EditText etName;
 
-    @ViewById(R.id.etAge)
+    @ViewById
     EditText etAge;
 
-    @ViewById(R.id.etNumber)
+    @ViewById
     EditText etNumber;
 
-    @ViewById(R.id.etJob)
+    @ViewById
     EditText etJob;
 
     private DatabaseHelper databaseHelper = null;
@@ -32,10 +32,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        databaseHelper = new DatabaseHelper(this);
+
     }
 
-    @Click(R.id.btnInsertData)
-    void insertClicked(){
+    @Click
+    void btnInsertData(){
         String name = etName.getText().toString();
         String age = etAge.getText().toString();
         String phone = etNumber.getText().toString();
@@ -65,8 +67,8 @@ public class MainActivity extends Activity {
     }
 
 
-    @Click(R.id.btnShowAllData)
-    void showClicked(){
+    @Click
+    void btnShowAllData(){
         Intent intent = new Intent(this, AddressListActivity_.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
